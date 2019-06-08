@@ -2,6 +2,10 @@
 
 Sanic boiler plate application
 
+### To Do
+- GraphQL integration
+- Messaging Frontend (ReactJs) (Relay)
+
 ### Tech
 - Sanic Framework
 - ReactJs
