@@ -1,0 +1,2 @@
+aioconsole==0.1.8
+AoikLiveReload==0.1.0

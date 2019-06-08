@@ -1,0 +1,41 @@
+version: '2'
+services:
+  # Postgres
+  postgres:
+    image: postgres:latest
+    hostname: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=sanic
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=sanic
+    ports:
+      - "5432:5432"
+
+
+  # Api web server
+  sanic:
+    image: python:latest
+    hostname: sanic
+    container_name: sanic
+    working_dir: /sanic
+    command: ./bin/start_dev.sh
+    volumes:
+      - ./:/sanic
+    ports:
+      - "5000:5000"
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    environment:
+      # Sanic
+      - SANIC_APP_CONFIG=development
+      - SECRET_KEY=2uGHGnRrGeNhCQYQFGjYE4E8ZdMStT9sShvP
+
+      # Database
+      - DB_NAME=development
+      - DB_USER=sanic
+      - DB_PASSWORD=password
+      - DB_HOST=postgres
+      - DB_PORT=5432

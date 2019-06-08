@@ -1,0 +1,6 @@
+flake8>=3.3.0
+codecov>=2.0.9
+pytest>=3.1.1
+pytest-cov>=2.5.1
+pytest-sanic>=0.1.9
+mixer==6.0.1
