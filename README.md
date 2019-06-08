@@ -1,9 +1,9 @@
-# Sanic Boilerplate
+# Sanic Boilerplate (Messaging App)
 
 Sanic boiler plate application
 
 ### Tech
-- Sanic
+- Sanic Framework
 - ReactJs
 - Docker
 - Alembic
@@ -27,6 +27,7 @@ Sanic boiler plate application
 │   ├── libs                # Core libraries
 │   ├── media               # Media files
 │   ├── static              # Static files
+│   │   ├── src             # ReactJs
 ├── config                  # Config files
 │   ├── base.py
 │   ├── development.py
@@ -39,7 +40,7 @@ Sanic boiler plate application
 
 
 ### Migrate instructions
-alembic revision -m "create user table" --version-path=app/domain/user/migrations --head=base --branch-label=user
-alembic revision -m "create verification code table" --head=user@head
-alembic revision -m "create sample table" --head=user@head
-alembic -n development upgrade user@head
+- alembic revision -m "create user table" --version-path=app/domain/user/migrations --head=base --branch-label=user
+- alembic revision -m "create verification code table" --head=user@head
+- alembic revision -m "create sample table" --head=user@head
+- alembic -n development upgrade user@head
