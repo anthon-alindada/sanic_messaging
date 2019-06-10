@@ -84,7 +84,8 @@ def create_app(config_name=None):
     """
     @app.listener('before_server_start')
     async def init_graphql(app, loop):
-        if app.router.routes_names.get('graphql') is not None:
+        # Disable graphql route if testing
+        if config_name != 'test':
             from .http.graphql import schema
             from graphql.execution.executors.asyncio import AsyncioExecutor
             app.add_route(GraphQLView.as_view(
