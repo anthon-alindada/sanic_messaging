@@ -3,7 +3,7 @@
 from .base_store import BaseStore
 
 # Model
-from ..models import Channel
+from ..models import Channel, ChannelUser
 
 
 class ChannelStore(BaseStore):
@@ -22,3 +22,14 @@ class ChannelStore(BaseStore):
         self._update_query = channel.update(name=channel.name)
 
         return channel
+
+    async def add_user(self, channel_id, user_id):
+        channel_user = ChannelUser(channel_id=channel_id, user_id=user_id)
+        channel_user = await channel_user.create()
+
+        return channel_user
+
+    async def remove_user(self, channel_user):
+        await channel_user.delete()
+
+        return True

@@ -3,7 +3,7 @@
 from .base_query import BaseQuery
 
 # Model
-from ..models import Channel
+from ..models import Channel, ChannelUser
 
 
 class ChannelQuery(BaseQuery):
@@ -14,6 +14,7 @@ class ChannelQuery(BaseQuery):
     def __init__(self):
         self._model = Channel
         self._query = self._model.query
+        self._channel_user_model = ChannelUser
 
     def find_by_id(self, id):
         self._query = self._query.where(self._model.id == id)
@@ -44,5 +45,12 @@ class ChannelQuery(BaseQuery):
         if end:
             self._query = self._query.where(
                 self._model.edited_timestamp < end)
+
+        return self
+
+    def filter_by_user_id(self, user_id):
+        self._query = self._query.select_from(
+            self._model.join(self._channel_user_model)).where(
+                self._channel_user_model.user_id == user_id)
 
         return self

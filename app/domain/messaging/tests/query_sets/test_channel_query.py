@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 
 # Models
-from ...models import Channel
+from app.domain.messaging.models import Channel, ChannelUser
 
 # Messaging context
 from ... import messaging_context
@@ -104,3 +104,17 @@ async def test_filter_channel_by_edited_timestamp(channel_data):
         assert channel.edited_timestamp < end and \
             channel.edited_timestamp > start, \
             'Should filter channel by start and end edited timestamp'
+
+
+async def test_filter_channel_by_user_id(channel_data):
+    channels = await messaging_context.channel_query().filter_by_user_id(
+        user_id=1).filter()
+
+    for channel in channels:
+        # Check if channel user existing
+        channel_user = await ChannelUser.query.where(
+            ChannelUser.channel_id == channel.id).where(
+                ChannelUser.user_id == 1).gino.first()
+
+        assert channel_user is not None, \
+            'Should filter all channels by user id'

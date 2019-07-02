@@ -48,7 +48,7 @@ def channel_data(loop, sanic_server, request):
     Initial channel domain test
     """
     # Models
-    from ..models import Channel
+    from ..models import Channel, ChannelUser
 
     if pytest.channels_data is None:
         # Delete all channels data in database
@@ -59,6 +59,18 @@ def channel_data(loop, sanic_server, request):
         # Generate fixed channel
         channel_instance = loop.run_until_complete(Channel.create(
             id=1,
+            owner_id=1,
+            name='General'))
+
+        channels_data.append(channel_instance)
+
+        # Add user to channel default
+        loop.run_until_complete(ChannelUser.create(
+            channel_id=channel_instance.id, user_id=1))
+
+        # Generate fixed channel
+        channel_instance = loop.run_until_complete(Channel.create(
+            id=2,
             owner_id=1,
             name='General'))
 
@@ -76,6 +88,11 @@ def channel_data(loop, sanic_server, request):
                 edited_timestamp=channel.edited_timestamp))
 
             channels_data.append(channel_instance)
+
+            # Generate random channel user data
+            if random.choice([True, False]):
+                loop.run_until_complete(ChannelUser.create(
+                    channel_id=channel_instance.id, user_id=1))
 
         pytest.channels_data = channels_data
 

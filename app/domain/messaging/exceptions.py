@@ -7,9 +7,11 @@ class InvalidInput(Exception):
     Invalid input
     """
 
-    def __init__(self, message='Invalid input'):
+    def __init__(self, errors=None, message='Invalid input'):
         super(InvalidInput, self).__init__(message)
         self.when = datetime.now()
+        self.errors = errors
+        self.message = message
 
 
 class Unauthorized(Exception):
@@ -17,9 +19,11 @@ class Unauthorized(Exception):
     Unauthorized
     """
 
-    def __init__(self, message='Unauthorized'):
+    def __init__(self, errors=None, message='Unauthorized'):
         super(Unauthorized, self).__init__(message)
         self.when = datetime.now()
+        self.errors = errors
+        self.message = message
 
 
 class NotFound(Exception):
@@ -27,6 +31,8 @@ class NotFound(Exception):
     NotFound
     """
 
-    def __init__(self, message='NotFound'):
+    def __init__(self, errors=None, message='NotFound'):
         super(NotFound, self).__init__(message)
         self.when = datetime.now()
+        self.errors = errors
+        self.message = message

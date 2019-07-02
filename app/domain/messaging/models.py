@@ -24,6 +24,21 @@ class Channel(db.Model):
         return '<Channel: %r>' % (self.name)
 
 
+class ChannelUser(db.Model):
+    """
+    Channel User model
+    Many to Many relation
+    """
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+
+    __tablename__ = 'channel_users'
+
+    def __repr__(self):
+        return '<ChannelUser: %r %r>' % (self.user_id, self.channel_id)
+
+
 class Message(db.Model):
     """
     Message model

@@ -42,6 +42,7 @@ def init_messaging_app(
     from .libs.filter_message import FilterMessage
     from .libs.update_channel import UpdateChannel
     from .libs.update_message import UpdateMessage
+    from .libs.add_user_to_channel import AddUserToChannel
 
     # Set messaging context
     # Set dependency injector providers
@@ -82,3 +83,7 @@ def init_messaging_app(
         UpdateMessage,
         update_message_form=messaging_context.update_message_form,
         message_store=messaging_context.message_store)
+    messaging_context.add_user_to_channel = providers.Factory(
+        AddUserToChannel,
+        channel_store=messaging_context.channel_store,
+        channel_query=messaging_context.channel_query)
