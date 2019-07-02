@@ -8,6 +8,9 @@ from ... import messaging_context
 # Exception
 from ...exceptions import InvalidInput, NotFound
 
+# Model
+from ...models import ChannelUser
+
 
 async def test_filter_channel_filter_owner_id(channel_data):
     # Filter owner_id invalid
@@ -169,3 +172,30 @@ async def test_filter_channel_filter_channel_id(channel_data):
     channel = await filter_library.run(channel_id='1')
 
     assert channel.id == 1, 'Should find channel by id'
+
+
+async def test_filter_channel_filter_by_user_id(channel_data):
+    # Filter owner_id invalid
+    filter_library = messaging_context.filter_channel()
+    errors = None
+
+    try:
+        await filter_library.run(user_id='asdf')
+    except InvalidInput:
+        errors = await filter_library.get_errors()
+
+    assert errors['user_id'] == 'user_id is invalid', \
+        'Should validate user_id if not integer'
+
+    # Filter channels by user_id
+    filter_library = messaging_context.filter_channel()
+    channels = await filter_library.run(user_id='1')
+
+    for channel in channels:
+        # Check if channel user existing
+        channel_user = await ChannelUser.query.where(
+            ChannelUser.channel_id == channel.id).where(
+                ChannelUser.user_id == 1).gino.first()
+
+        assert channel_user is not None, \
+            'Should filter all channels by user id'

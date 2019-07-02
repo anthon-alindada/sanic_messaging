@@ -22,6 +22,7 @@ class FilterChannel:
     async def run(
         self,
         owner_id=None,
+        user_id=None,
         is_channel=None,
         timestamp_start=None,
         timestamp_end=None,
@@ -31,6 +32,7 @@ class FilterChannel:
     ):
         # Set inputs
         self.owner_id = owner_id
+        self.user_id = user_id
         self.is_channel = is_channel
         self.timestamp_start = timestamp_start
         self.timestamp_end = timestamp_end
@@ -49,6 +51,10 @@ class FilterChannel:
         # Filter owner_id
         if self.owner_id is not None:
             channel_query = channel_query.filter_by_owner_id(self.owner_id)
+
+        # Filter user_id
+        if self.user_id is not None:
+            channel_query = channel_query.filter_by_user_id(self.user_id)
 
         # Filter is_channel
         if self.is_channel is not None:
@@ -85,6 +91,13 @@ class FilterChannel:
                 self.owner_id = int(self.owner_id)
             except (ValueError, TypeError):
                 self._errors['owner_id'] = 'owner_id is invalid'
+
+        # Validate user_id
+        if self.user_id is not None:
+            try:
+                self.user_id = int(self.user_id)
+            except (ValueError, TypeError):
+                self._errors['user_id'] = 'user_id is invalid'
 
         # Validate is_channel
         if self.is_channel is not None:
