@@ -17,14 +17,52 @@ def create_channel_lib():
     return messaging_context.create_channel()
 
 
-async def test_create_channel_invalid_form(channel_data, create_channel_lib):
-    errors = None
+async def test_create_channel_blank_name(channel_data, create_channel_lib):
+    errors = {}
+
+    # Test name is blank
     try:
+        create_channel_lib = messaging_context.create_channel()
         await create_channel_lib.run(name='', owner_id=1, is_channel=True)
     except InvalidInput:
         errors = await create_channel_lib.get_errors()
 
-    assert errors is not None, 'Should fail if form has an error'
+    assert errors.get('name') == ['Name is required'], \
+        'Should fail if form has an error'
+
+
+async def test_create_channel_long_name(channel_data, create_channel_lib):
+    errors = {}
+
+    # Test name is more than 50 characters
+    try:
+        create_channel_lib = messaging_context.create_channel()
+        await create_channel_lib.run(
+            name='aasdfghjklsasdfghjklsasdfghjklsasdfghjklsasdfghjssdfghjkls',
+            owner_id=1,
+            is_channel=True)
+    except InvalidInput:
+        errors = await create_channel_lib.get_errors()
+
+    assert errors.get(
+        'name') == ['Name must be less than or equal to 50 characters'], \
+        'Should fail if form has an error'
+
+
+async def test_create_channel_valid_name(channel_data, create_channel_lib):
+    errors = {}
+
+    # Test name is valid
+    try:
+        create_channel_lib = messaging_context.create_channel()
+        await create_channel_lib.run(
+            name='Name',
+            owner_id=1,
+            is_channel=True)
+    except InvalidInput:
+        errors = await create_channel_lib.get_errors()
+
+    assert errors.get('name') is None, 'Should fail if form has an error'
 
 
 async def test_create_channel(channel_data, create_channel_lib):
