@@ -20,6 +20,10 @@ class Login:
         self._errors = {}
 
     async def run(self, email, password):
+        """
+        Run the service
+        """
+
         # Set user query active
         user_query_email = self.user_query.new()
 

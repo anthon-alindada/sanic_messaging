@@ -12,6 +12,10 @@ class GenerateJwtToken:
         pass
 
     async def run(self, user):
+        """
+        Run the service
+        """
+
         # Generate auth jwt
         jwt_token = generate_auth_jwt(
             user_id=user.id, email=user.email)

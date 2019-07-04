@@ -38,9 +38,6 @@ def init_user_app(
     # Query sets
     from .query_sets.user_query import UserQuery
 
-    # Forms
-    from .forms.signup_form import SignupForm
-
     # Libs
     from .libs.signup import Signup
     from .libs.login import Login
@@ -58,9 +55,6 @@ def init_user_app(
     # Query sets
     user_context.user_query = providers.Factory(UserQuery)
 
-    # Forms
-    user_context.signup_form = providers.Object(SignupForm)
-
     # Authentication
     user_context.password_authentication = providers.Singleton(
         PasswordAuthentication, user_query=user_context.user_query)
@@ -71,7 +65,6 @@ def init_user_app(
     user_context.signup = providers.Factory(
         Signup,
         user_query=user_context.user_query,
-        signup_form=user_context.signup_form,
         user_store=user_context.user_store)
     user_context.login = providers.Factory(
         Login,
