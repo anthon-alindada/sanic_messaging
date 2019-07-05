@@ -22,7 +22,7 @@ async def test_filter_channel_filter_owner_id(channel_data):
     except InvalidInput:
         errors = await filter_library.get_errors()
 
-    assert errors['owner_id'] == 'owner_id is invalid', \
+    assert errors['owner_id'] == ['owner_id is invalid'], \
         'Should validate owner_id if not integer'
 
     # Filter channels by owner_id
@@ -43,7 +43,7 @@ async def test_filter_channel_filter_is_channel(channel_data):
     except InvalidInput:
         errors = await filter_library.get_errors()
 
-    assert errors['is_channel'] == 'is_channel is invalid', \
+    assert errors['is_channel'] == ['is_channel is invalid'], \
         'Should validate is_channel if not true or false string'
 
     # Filter channels by is_channel
@@ -72,7 +72,7 @@ async def test_filter_channel_filter_timestamp(channel_data):
     except InvalidInput:
         errors = await filter_library.get_errors()
 
-    assert errors['timestamp_start'] == 'timestamp_start is invalid', \
+    assert errors['timestamp_start'] == ['timestamp_start is invalid'], \
         'Should validate timestamp_start if not epoch value'
 
     # Filter timestamp_end invalid
@@ -84,7 +84,7 @@ async def test_filter_channel_filter_timestamp(channel_data):
     except InvalidInput:
         errors = await filter_library.get_errors()
 
-    assert errors['timestamp_end'] == 'timestamp_end is invalid', \
+    assert errors['timestamp_end'] == ['timestamp_end is invalid'], \
         'Should validate timestamp_end if not epoch value'
 
     # Filter timestamp start and end
@@ -112,7 +112,7 @@ async def test_filter_channel_filter_edited_timestamp(channel_data):
         errors = await filter_library.get_errors()
 
     assert errors['edited_timestamp_start'] == \
-        'edited_timestamp_start is invalid', \
+        ['edited_timestamp_start is invalid'], \
         'Should validate edited_timestamp_start if not epoch value'
 
     # Filter timestamp_end invalid
@@ -125,7 +125,7 @@ async def test_filter_channel_filter_edited_timestamp(channel_data):
         errors = await filter_library.get_errors()
 
     assert errors['edited_timestamp_end'] == \
-        'edited_timestamp_end is invalid', \
+        ['edited_timestamp_end is invalid'], \
         'Should validate edited_timestamp_end if not epoch value'
 
     # Filter timestamp start and end
@@ -153,7 +153,7 @@ async def test_filter_channel_filter_channel_id(channel_data):
     except InvalidInput:
         errors = await filter_library.get_errors()
 
-    assert errors['channel_id'] == 'channel_id is invalid', \
+    assert errors['channel_id'] == ['channel_id is invalid'], \
         'Should validate channel_id if not integer'
 
     # Filter channels by owner_id
@@ -184,7 +184,7 @@ async def test_filter_channel_filter_by_user_id(channel_data):
     except InvalidInput:
         errors = await filter_library.get_errors()
 
-    assert errors['user_id'] == 'user_id is invalid', \
+    assert errors['user_id'] == ['user_id is invalid'], \
         'Should validate user_id if not integer'
 
     # Filter channels by user_id

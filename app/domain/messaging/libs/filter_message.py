@@ -18,6 +18,78 @@ class FilterMessage:
         # Errors
         self._errors = {}
 
+    async def validate(self) -> bool:
+        """
+        Validate input data
+        """
+
+        # Validate message_id
+        if self.message_id is not None:
+            try:
+                self.message_id = int(self.message_id)
+            except (ValueError, TypeError):
+                await self.set_error('message_id', 'message_id is invalid')
+
+        # Validate author_id
+        if self.author_id is not None:
+            try:
+                self.author_id = int(self.author_id)
+            except (ValueError, TypeError):
+                await self.set_error('author_id', 'author_id is invalid')
+
+        # Validate channel_id
+        if self.channel_id is not None:
+            try:
+                self.channel_id = int(self.channel_id)
+            except (ValueError, TypeError):
+                await self.set_error('channel_id', 'channel_id is invalid')
+
+        # Validate timestamp_start
+        if self.timestamp_start is not None:
+            try:
+                self.timestamp_start = datetime.fromtimestamp(
+                    int(self.timestamp_start))
+            except (ValueError, TypeError):
+                await self.set_error(
+                    'timestamp_start', 'timestamp_start is invalid')
+
+        # Validate timestamp_end
+        if self.timestamp_end is not None:
+            try:
+                self.timestamp_end = datetime.fromtimestamp(
+                    int(self.timestamp_end))
+            except (ValueError, TypeError):
+                await self.set_error(
+                    'timestamp_end', 'timestamp_end is invalid')
+
+        # Validate edited_timestamp_start
+        if self.edited_timestamp_start is not None:
+            try:
+                self.edited_timestamp_start = datetime.fromtimestamp(
+                    int(self.edited_timestamp_start))
+            except (ValueError, TypeError):
+                await self.set_error(
+                    'edited_timestamp_start',
+                    'edited_timestamp_start is invalid')
+
+        # Validate edited_timestamp_end
+        if self.edited_timestamp_end is not None:
+            try:
+                self.edited_timestamp_end = datetime.fromtimestamp(
+                    int(self.edited_timestamp_end))
+            except (ValueError, TypeError):
+                await self.set_error(
+                    'edited_timestamp_end',
+                    'edited_timestamp_end is invalid')
+
+        return not self._errors
+
+    async def set_error(self, field, message) -> None:
+        """
+        Set error field
+        """
+        self._errors[field] = [message]
+
     async def run(
         self,
         message_id=None,
@@ -28,6 +100,10 @@ class FilterMessage:
         edited_timestamp_start=None,
         edited_timestamp_end=None,
     ):
+        """
+        Run the service
+        """
+
         # Set inputs
         self.message_id = message_id
         self.author_id = author_id
@@ -37,11 +113,11 @@ class FilterMessage:
         self.edited_timestamp_start = edited_timestamp_start
         self.edited_timestamp_end = edited_timestamp_end
 
-        # Validate inputs
-        is_valid = await self.validate_inputs()
+        # Validate input
+        is_valid = await self.validate()
 
         if is_valid is False:
-            raise InvalidInput
+            raise InvalidInput(self._errors)
 
         message_query = self.message_query
 
@@ -75,63 +151,8 @@ class FilterMessage:
 
         return await message_query.filter()
 
-    async def validate_inputs(self):
-        # Validate message_id
-        if self.message_id is not None:
-            try:
-                self.message_id = int(self.message_id)
-            except (ValueError, TypeError):
-                self._errors['message_id'] = 'message_id is invalid'
-
-        # Validate author_id
-        if self.author_id is not None:
-            try:
-                self.author_id = int(self.author_id)
-            except (ValueError, TypeError):
-                self._errors['author_id'] = 'author_id is invalid'
-
-        # Validate channel_id
-        if self.channel_id is not None:
-            try:
-                self.channel_id = int(self.channel_id)
-            except (ValueError, TypeError):
-                self._errors['channel_id'] = 'channel_id is invalid'
-
-        # Validate timestamp_start
-        if self.timestamp_start is not None:
-            try:
-                self.timestamp_start = datetime.fromtimestamp(
-                    int(self.timestamp_start))
-            except (ValueError, TypeError):
-                self._errors['timestamp_start'] = 'timestamp_start is invalid'
-
-        # Validate timestamp_end
-        if self.timestamp_end is not None:
-            try:
-                self.timestamp_end = datetime.fromtimestamp(
-                    int(self.timestamp_end))
-            except (ValueError, TypeError):
-                self._errors['timestamp_end'] = 'timestamp_end is invalid'
-
-        # Validate edited_timestamp_start
-        if self.edited_timestamp_start is not None:
-            try:
-                self.edited_timestamp_start = datetime.fromtimestamp(
-                    int(self.edited_timestamp_start))
-            except (ValueError, TypeError):
-                self._errors['edited_timestamp_start'] = \
-                    'edited_timestamp_start is invalid'
-
-        # Validate edited_timestamp_end
-        if self.edited_timestamp_end is not None:
-            try:
-                self.edited_timestamp_end = datetime.fromtimestamp(
-                    int(self.edited_timestamp_end))
-            except (ValueError, TypeError):
-                self._errors['edited_timestamp_end'] = \
-                    'edited_timestamp_end is invalid'
-
-        return not self._errors
-
     async def get_errors(self):
+        """
+        Get errors
+        """
         return self._errors
