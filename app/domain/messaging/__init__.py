@@ -31,9 +31,6 @@ def init_messaging_app(
     from .query_sets.channel_query import ChannelQuery
     from .query_sets.message_query import MessageQuery
 
-    # Forms
-    from .forms.message_forms import CreateMessageForm, UpdateMessageForm
-
     # Libs
     from .libs.create_channel import CreateChannel
     from .libs.create_message import CreateMessage
@@ -53,17 +50,12 @@ def init_messaging_app(
     messaging_context.channel_query = providers.Factory(ChannelQuery)
     messaging_context.message_query = providers.Factory(MessageQuery)
 
-    # Forms
-    messaging_context.create_message_form = providers.Object(CreateMessageForm)
-    messaging_context.update_message_form = providers.Object(UpdateMessageForm)
-
     # Libs
     messaging_context.create_channel = providers.Factory(
         CreateChannel,
         channel_store=messaging_context.channel_store)
     messaging_context.create_message = providers.Factory(
         CreateMessage,
-        create_message_form=messaging_context.create_message_form,
         message_store=messaging_context.message_store)
     messaging_context.filter_channel = providers.Factory(
         FilterChannel,
@@ -76,7 +68,6 @@ def init_messaging_app(
         channel_store=messaging_context.channel_store)
     messaging_context.update_message = providers.Factory(
         UpdateMessage,
-        update_message_form=messaging_context.update_message_form,
         message_store=messaging_context.message_store)
     messaging_context.add_user_to_channel = providers.Factory(
         AddUserToChannel,

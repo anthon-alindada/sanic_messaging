@@ -53,14 +53,11 @@ async def test_create_channel_valid_name(channel_data, create_channel_lib):
     errors = {}
 
     # Test name is valid
-    try:
-        create_channel_lib = messaging_context.create_channel()
-        await create_channel_lib.run(
-            name='Name',
-            owner_id=1,
-            is_channel=True)
-    except InvalidInput:
-        errors = await create_channel_lib.get_errors()
+    create_channel_lib = messaging_context.create_channel()
+    await create_channel_lib.run(
+        name='Name',
+        owner_id=1,
+        is_channel=True)
 
     assert errors.get('name') is None, 'Should fail if form has an error'
 
