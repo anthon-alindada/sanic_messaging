@@ -30,6 +30,7 @@ def init_messaging_app(
     # Query sets
     from .query_sets.channel_query import ChannelQuery
     from .query_sets.message_query import MessageQuery
+    from .query_sets.channel_user_query import ChannelUserQuery
 
     # Libs
     from .libs.create_channel import CreateChannel
@@ -39,6 +40,7 @@ def init_messaging_app(
     from .libs.update_channel import UpdateChannel
     from .libs.update_message import UpdateMessage
     from .libs.add_user_to_channel import AddUserToChannel
+    from .libs.remove_user_to_channel import RemoveUserToChannel
 
     # Set messaging context
     # Set dependency injector providers
@@ -49,6 +51,7 @@ def init_messaging_app(
     # Query sets
     messaging_context.channel_query = providers.Factory(ChannelQuery)
     messaging_context.message_query = providers.Factory(MessageQuery)
+    messaging_context.channel_user_query = providers.Factory(ChannelUserQuery)
 
     # Libs
     messaging_context.create_channel = providers.Factory(
@@ -73,3 +76,7 @@ def init_messaging_app(
         AddUserToChannel,
         channel_store=messaging_context.channel_store,
         channel_query=messaging_context.channel_query)
+    messaging_context.remove_user_to_channel = providers.Factory(
+        RemoveUserToChannel,
+        channel_store=messaging_context.channel_store,
+        channel_user_query=messaging_context.channel_user_query)
